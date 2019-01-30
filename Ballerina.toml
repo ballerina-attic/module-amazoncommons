@@ -1,0 +1,7 @@
+[project]
+org-name = "wso2"
+version = "0.1.0"
+authors = ["WSO2"]
+keywords = ["amazon", "aws", "commons"]
+repository = "https://github.com/wso2-ballerina/module-amazoncommons"
+license = "Apache-2.0"
