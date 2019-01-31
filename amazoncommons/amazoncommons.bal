@@ -14,18 +14,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/time;
 import ballerina/crypto;
 import ballerina/encoding;
+import ballerina/time;
 
 final string DATE_FORMAT = "yyyyMMdd'T'HHmmss'Z'";
 final string SHORT_DATE_FORMAT = "yyyyMMdd";
 final string AWS_SIGN_ALGORITHM = "AWS4-HMAC-SHA256";
 public final string AMAZON_HOST = "amazonaws.com";
-public final string DEFAULT_REGION = "us-east-1";
+public final string DEFAULT_REGION = "us-west-2";
 
 # Generates the Amzdate value given a specific time.
-#
+# 
+# + time - The time to use
 # + return - The Amzdate value
 public function generateAmzdate(time:Time time) returns string {
     return time:format(time, DATE_FORMAT);
@@ -33,6 +34,7 @@ public function generateAmzdate(time:Time time) returns string {
 
 # Generates the Datestamp value given a specific time.
 #
+# + time - The time to use
 # + return - The Datestamp value
 public function generateDatestamp(time:Time time) returns string {
     return time:format(time, SHORT_DATE_FORMAT);
@@ -40,6 +42,7 @@ public function generateDatestamp(time:Time time) returns string {
 
 # Populate the given headers map with the authorization header. All other headers must be passed into the
 # `orderedHeaders` map in a manner where the keys are ordered; e.g. "X-Amz-Date" must be passed in.
+#
 # + accessKey - The access key
 # + secretKey - The secret key
 # + region - The AWS region, e.g. "us-west-1"
@@ -85,6 +88,7 @@ function sign(byte[] key, string msg) returns byte[] {
 }
 
 # Generates and returns the AWS signature key
+#
 # + secretKey - the secret key in string format as given in the AWS management console
 # + datestamp - The Datestamp value
 # + region - The AWS region, e.g. "us-west-1"
@@ -99,6 +103,11 @@ public function getSignatureKey(string secretKey, string datestamp, string regio
     return kSigning;
 }
 
+# Represents an S3 object.
+#
+# + bucket - The bucket name
+# + name - The name of the object
+# + objVersion - The version of the object
 public type S3Object record {
     string bucket;
     string name;
